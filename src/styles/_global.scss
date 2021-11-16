@@ -1,5 +1,32 @@
+@use "theme" as *;
+@import "reset.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap");
+
+body,
+#root {
+  display: flex;
+
+  font-family: "Source Sans Pro", sans-serif;
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  flex: 1;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .App {
+  height: 100%;
   text-align: center;
+  flex: 1;
+  background: var(--theme-color);
+  color: var(--theme-page-text);
 }
 
 .App-logo {
@@ -14,14 +41,11 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
