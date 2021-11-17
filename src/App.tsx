@@ -15,7 +15,7 @@ function App() {
       <header className="App-header"></header>
 
       <Router />
-      <button onClick={handleTheme}>test</button>
+      {/* <button onClick={handleTheme}>test</button> */}
     </div>
   );
 }

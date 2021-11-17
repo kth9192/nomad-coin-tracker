@@ -5,10 +5,13 @@
     height: 100%;
     padding: 0 20px;
     flex-direction: column;
+    padding: 0 20px;
+    max-width: 480px;
+    margin: 0 auto;
 }
 
 .title {
-    size: 48px;
+    font-size: 48px;
     color: var(--theme-accent-color);
 }
 
@@ -32,7 +35,10 @@
     padding: 20px;
     border-radius: 15px;
     a {
-        display: block;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
         padding: 10px;
         transition: color 0.2s ease-in;
     }
@@ -42,4 +48,14 @@
             color: var(--theme-accent-color);
         }
     }
+}
+
+.loader {
+    display: block;
+    text-align: center;
+}
+
+.coinSymbol {
+    width: 32px;
+    height: 32px;
 }

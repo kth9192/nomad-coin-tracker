@@ -1,50 +1,48 @@
 import Coin from 'components/coin';
-import React from 'react';
+import { CoinInterface } from 'interface/Coin';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import coinStyle from 'styles/components/coin.module.scss';
 
 function Coins() {
-  const coins = [
-    {
-      id: 'btc-bitcoin',
-      name: 'Bitcoin',
-      symbol: 'BTC',
-      rank: 1,
-      is_new: false,
-      is_active: true,
-      type: 'coin',
-    },
-    {
-      id: 'eth-ethereum',
-      name: 'Ethereum',
-      symbol: 'ETH',
-      rank: 2,
-      is_new: false,
-      is_active: true,
-      type: 'coin',
-    },
-    {
-      id: 'hex-hex',
-      name: 'HEX',
-      symbol: 'HEX',
-      rank: 3,
-      is_new: false,
-      is_active: true,
-      type: 'token',
-    },
-  ];
+  const [coins, setCoins] = useState<CoinInterface[]>([]);
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch('https://api.coinpaprika.com/v1/coins');
+      const json = await response.json();
+
+      setCoins(json.slice(0, 100));
+      setLoading(false);
+    })();
+  }, []);
 
   return (
     <div className={coinStyle.coinPage}>
       <div className={coinStyle.header}>코인</div>
 
-      <ul className={coinStyle.coinlist}>
-        {coins.map((coin) => (
-          <li className={coinStyle.coin} key={coin.id}>
-            <Link to={`/${coin.id}`}>{coin.name} &rarr;</Link>
-          </li>
-        ))}
-      </ul>
+      {!isLoading ? (
+        <ul className={coinStyle.coinlist}>
+          {coins.map((coin) => (
+            <li className={coinStyle.coin} key={coin.id}>
+              <Link
+                to={`/${coin.id}`}
+                state={{ name: coin.name }}
+                className={coinStyle.coinItemWrapper}
+              >
+                <img
+                  className={coinStyle.coinSymbol}
+                  src={`https://cryptoicon-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                />
+                <span>{coin.name} &rarr;</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <span className={coinStyle.loader}>loading...</span>
+      )}
     </div>
   );
 }
