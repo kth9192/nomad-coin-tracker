@@ -1,5 +1,5 @@
 import Coin from 'components/coin';
-import { CoinInterface } from 'interface/Coin';
+import { CoinInterface } from 'interface/coin';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import coinStyle from 'styles/components/coin.module.scss';

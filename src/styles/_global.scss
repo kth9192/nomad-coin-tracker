@@ -6,9 +6,12 @@
 body,
 #root {
   display: flex;
-
   font-family: "Source Sans Pro", sans-serif;
   min-height: 100vh;
+  font-weight: 300;
+  background-color: var(--theme-page-background);
+  color: var(--theme-page-text);
+  line-height: 1.2;
 }
 
 #root {

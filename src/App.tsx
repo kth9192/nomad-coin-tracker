@@ -11,12 +11,12 @@ function App() {
   };
 
   return (
-    <div className={`App ${theme}`}>
+    <main className={`App ${theme}`}>
       <header className="App-header"></header>
 
       <Router />
       {/* <button onClick={handleTheme}>test</button> */}
-    </div>
+    </main>
   );
 }
 
