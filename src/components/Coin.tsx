@@ -12,40 +12,36 @@ import {
 } from 'react-router';
 import coinStyle from 'styles/components/coin.module.scss';
 import { Link } from 'react-router-dom';
+import { getCoinInfoData, getCoinPriceData } from 'api/coinApi';
+import { useQuery } from 'react-query';
 
 function Coin() {
   const { coinId } = useParams();
-  const [isLoading, setLoading] = useState(true);
   const { state } = useLocation();
 
-  const [coinInfo, setCoinInfo] = useState<CoinInfo>();
-  const [price, setPrice] = useState<CoinPrice>();
+  const { isLoading: infoLoading, data: infoData } = useQuery<CoinInfo>(
+    ['getCoinInfo', coinId],
+    () => getCoinInfoData(coinId ?? ''),
+  );
+
+  const { isLoading: priceLoading, data: priceData } = useQuery<CoinPrice>(
+    ['getCoinPrice', coinId],
+    () => getCoinPriceData(coinId ?? ''),
+  );
+
   const priceMatch = useMatch('/:coinId/price');
   const chartMatch = useMatch('/:coinId/chart');
 
   useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
-
-      console.log(infoData, priceData);
-
-      setCoinInfo(infoData);
-      setPrice(priceData);
-      setLoading(false);
-    })();
+    (async () => {})();
   }, [coinId]);
 
+  const isLoading = infoLoading || priceLoading;
   return (
     <div className={coinStyle.coinPage}>
       <div className={coinStyle.header}>
         <h1 className={coinStyle.title}>
-          {state?.name ? state.name : isLoading ? 'loading...' : coinInfo?.name}
+          {state?.name ? state.name : isLoading ? 'loading...' : infoData?.name}
         </h1>
       </div>
 
@@ -56,28 +52,28 @@ function Coin() {
           <div className={coinStyle.overview}>
             <div className={coinStyle.overviewItem}>
               <span>Rank:</span>
-              <span>{coinInfo?.rank}</span>
+              <span>{infoData?.rank}</span>
             </div>
             <div className={coinStyle.overviewItem}>
               <span>Symbol:</span>
-              <span>${coinInfo?.symbol}</span>
+              <span>${infoData?.symbol}</span>
             </div>
             <div className={coinStyle.overviewItem}>
               <span>Open Source:</span>
-              <span>{coinInfo?.open_source ? 'Yes' : 'No'}</span>
+              <span>{infoData?.open_source ? 'Yes' : 'No'}</span>
             </div>
           </div>
 
-          <div className={coinStyle.desc}>{coinInfo?.description}</div>
+          <div className={coinStyle.desc}>{infoData?.description}</div>
 
           <div className={coinStyle.overview}>
             <div className={coinStyle.overviewItem}>
               <span>Total Supply:</span>
-              <span>{price?.total_supply}</span>
+              <span>{priceData?.total_supply}</span>
             </div>
             <div className={coinStyle.overviewItem}>
               <span>Max Supply:</span>
-              <span>{price?.max_supply}</span>
+              <span>{priceData?.max_supply}</span>
             </div>
           </div>
 

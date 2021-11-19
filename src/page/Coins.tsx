@@ -1,30 +1,27 @@
+import { getCoinAll } from 'api/coinApi';
 import Coin from 'components/coin';
-import { CoinInterface } from 'interface/coin';
+import { ICoin } from 'interface/coin';
 import React, { useState, useEffect } from 'react';
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import coinStyle from 'styles/components/coin.module.scss';
 
 function Coins() {
-  const [coins, setCoins] = useState<CoinInterface[]>([]);
-  const [isLoading, setLoading] = useState(true);
+  const { isLoading, data } = useQuery<ICoin[]>('allCoins', getCoinAll);
 
   useEffect(() => {
-    (async () => {
-      const response = await fetch('https://api.coinpaprika.com/v1/coins');
-      const json = await response.json();
-
-      setCoins(json.slice(0, 100));
-      setLoading(false);
-    })();
+    (async () => {})();
   }, []);
 
   return (
     <div className={coinStyle.coinPage}>
-      <div className={coinStyle.header}>코인</div>
+      <div className={coinStyle.header}>
+        <h1>Coin</h1>
+      </div>
 
       {!isLoading ? (
         <ul className={coinStyle.coinlist}>
-          {coins.map((coin) => (
+          {data?.slice(0, 100).map((coin) => (
             <li className={coinStyle.coin} key={coin.id}>
               <Link
                 to={`/${coin.id}`}
