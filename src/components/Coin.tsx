@@ -1,6 +1,6 @@
 import { CoinInfo, CoinPrice } from 'interface/coin';
-import Chart from 'article/chart';
-import Price from 'article/price';
+import Chart from 'components/chart/lineChart';
+import Price from 'components/price';
 import React, { useEffect, useState } from 'react';
 import {
   Outlet,
@@ -16,6 +16,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { getCoinInfoData, getCoinPriceData } from 'api/coinApi';
 import { useQuery } from 'react-query';
 import CoinRoute from 'routes/coinRoute';
+import CoinTab from 'article/coinTab';
 
 function Coin() {
   const { coinId } = useParams();
@@ -33,9 +34,6 @@ function Coin() {
       refetchInterval: 10000,
     },
   );
-
-  const priceMatch = useMatch('/:coinId/price');
-  const chartMatch = useMatch('/:coinId/chart');
 
   useEffect(() => {
     (async () => {})();
@@ -84,26 +82,8 @@ function Coin() {
               <span>{priceData?.max_supply}</span>
             </div>
           </div>
-          <div className={coinStyle.tablist}>
-            <NavLink
-              to={`/${coinId}/chart`}
-              className={`${coinStyle.tab} ${
-                chartMatch !== null && `${coinStyle.isActive}`
-              } `}
-            >
-              <nav>Chart</nav>
-            </NavLink>
-            <NavLink
-              to={`/${coinId}/price`}
-              className={`${coinStyle.tab} ${
-                priceMatch !== null && `${coinStyle.isActive}`
-              } `}
-            >
-              <nav>Price</nav>
-            </NavLink>
-          </div>
+          <CoinTab />
           {/* <Outlet /> */}
-          <CoinRoute coinId={coinId ?? ''} />
         </>
       )}
     </div>

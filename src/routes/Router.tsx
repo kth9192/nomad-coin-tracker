@@ -1,5 +1,5 @@
-import Chart from 'article/chart';
-import Price from 'article/price';
+import Chart from 'components/chart/lineChart';
+import Price from 'components/price';
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Coin from '../components/coin';
