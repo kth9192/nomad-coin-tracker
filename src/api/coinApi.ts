@@ -15,3 +15,11 @@ export const getCoinPriceData = (coinId: string) => {
     (res) => res.json(),
   );
 };
+
+export const getCoinInfoByTimeline = (coinId: string) => {
+  const endDate = Math.floor(Date.now() / 1000);
+  const startDate = endDate - 60 * 60 * 24 * 7 * 2;
+  return fetch(
+    `${process.env.REACT_APP_BASE_URL}/coins/${coinId}/ohlcv/historical?start=${startDate}&end=${endDate}`,
+  ).then((res) => res.json());
+};

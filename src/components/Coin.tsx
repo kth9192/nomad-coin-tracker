@@ -10,10 +10,12 @@ import {
   useMatch,
   useParams,
 } from 'react-router';
+import { Helmet } from 'react-helmet';
 import coinStyle from 'styles/components/coin.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { getCoinInfoData, getCoinPriceData } from 'api/coinApi';
 import { useQuery } from 'react-query';
+import CoinRoute from 'routes/coinRoute';
 
 function Coin() {
   const { coinId } = useParams();
@@ -27,6 +29,9 @@ function Coin() {
   const { isLoading: priceLoading, data: priceData } = useQuery<CoinPrice>(
     ['getCoinPrice', coinId],
     () => getCoinPriceData(coinId ?? ''),
+    {
+      refetchInterval: 10000,
+    },
   );
 
   const priceMatch = useMatch('/:coinId/price');
@@ -39,6 +44,11 @@ function Coin() {
   const isLoading = infoLoading || priceLoading;
   return (
     <div className={coinStyle.coinPage}>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : isLoading ? 'loading...' : infoData?.name}
+        </title>
+      </Helmet>
       <div className={coinStyle.header}>
         <h1 className={coinStyle.title}>
           {state?.name ? state.name : isLoading ? 'loading...' : infoData?.name}
@@ -51,21 +61,19 @@ function Coin() {
         <>
           <div className={coinStyle.overview}>
             <div className={coinStyle.overviewItem}>
-              <span>Rank:</span>
+              <span>순위</span>
               <span>{infoData?.rank}</span>
             </div>
             <div className={coinStyle.overviewItem}>
-              <span>Symbol:</span>
-              <span>${infoData?.symbol}</span>
+              <span>티커</span>
+              <span>{infoData?.symbol}</span>
             </div>
             <div className={coinStyle.overviewItem}>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? 'Yes' : 'No'}</span>
+              <span>가격</span>
+              <span>${priceData?.quotes.USD.price}</span>
             </div>
           </div>
-
           <div className={coinStyle.desc}>{infoData?.description}</div>
-
           <div className={coinStyle.overview}>
             <div className={coinStyle.overviewItem}>
               <span>Total Supply:</span>
@@ -76,25 +84,26 @@ function Coin() {
               <span>{priceData?.max_supply}</span>
             </div>
           </div>
-
           <div className={coinStyle.tablist}>
-            <nav
+            <NavLink
+              to={`/${coinId}/chart`}
               className={`${coinStyle.tab} ${
                 chartMatch !== null && `${coinStyle.isActive}`
               } `}
             >
-              <Link to={`/${coinId}/chart`}>Chart</Link>
-            </nav>
-            <nav
+              <nav>Chart</nav>
+            </NavLink>
+            <NavLink
+              to={`/${coinId}/price`}
               className={`${coinStyle.tab} ${
                 priceMatch !== null && `${coinStyle.isActive}`
               } `}
             >
-              <Link to={`/${coinId}/price`}>Price</Link>
-            </nav>
+              <nav>Price</nav>
+            </NavLink>
           </div>
-
-          <Outlet />
+          {/* <Outlet /> */}
+          <CoinRoute coinId={coinId ?? ''} />
         </>
       )}
     </div>
