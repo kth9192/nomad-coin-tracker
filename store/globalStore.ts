@@ -1,4 +1,4 @@
-import { AppStateType } from './../src/interface/recoil/app';
+import { AppStateType } from '../src/interface/recoil/app';
 import { atom } from 'recoil';
 
 export const appGlobalState = atom<AppStateType>({
