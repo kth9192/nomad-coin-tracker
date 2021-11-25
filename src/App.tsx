@@ -3,12 +3,14 @@ import logo from './logo.svg';
 import './styles/_global.scss';
 import Router from './routes/router';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { useRecoilState } from 'recoil';
+import { AppStateType } from 'interface/recoil/app';
 
-function App() {
-  const [theme, setTheme] = useState('dark');
+
+  const [theme, setTheme] = useRecoilState<AppStateType>(appGlobalState);
 
   const handleTheme = () => {
-    setTheme((prevState) => (prevState === 'dark' ? 'light' : 'dark'));
+    setTheme((prevState: AppStateType) => !prevState);
   };
 
   return (

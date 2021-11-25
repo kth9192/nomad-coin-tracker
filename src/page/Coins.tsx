@@ -10,10 +10,6 @@ import coinStyle from 'styles/components/coin.module.scss';
 function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>('allCoins', getCoinAll);
 
-  useEffect(() => {
-    (async () => {})();
-  }, []);
-
   return (
     <div className={coinStyle.coinPage}>
       <Helmet>
@@ -21,6 +17,7 @@ function Coins() {
       </Helmet>
       <div className={coinStyle.header}>
         <h1>Coin</h1>
+        <button>Toggle Dark Mode</button>
       </div>
 
       {!isLoading ? (

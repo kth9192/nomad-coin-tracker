@@ -1,13 +1,15 @@
 .light {
     --theme-color: #7851a9;
-    --theme-page-background: #fff;
+    --theme-page-background: whitesmoke;
     --theme-page-text: #111;
-    --theme-accent-color: #111;
+    --theme-accent-color: #9c88ff;
+    --theme-card-bg: white;
 }
 
 .dark {
     --theme-color: #2f3640;
     --theme-page-background: #111;
-    --theme-page-text: #f5f6fa;
+    --theme-page-text: white;
     --theme-accent-color: #7851a9;
+    --theme-card-bg: transparent;
 }
